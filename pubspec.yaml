@@ -19,7 +19,7 @@ dependencies:
   google_fonts: ^6.1.0
   lottie: ^3.0.0
   permission_handler: ^11.3.0
-  geolocator: ^8.2.0
+  geolocator: ^10.1.1
   geocoding: ^2.0.4
   shared_preferences: ^2.2.2
 
