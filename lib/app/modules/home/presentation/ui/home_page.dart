@@ -7,7 +7,6 @@ import 'package:suamusica_weather/app/modules/home/presentation/cubit/states/hom
 import 'package:suamusica_weather/app/shared/shared.dart';
 
 import '../../../../design_system/design_system.dart';
-import '../../../../routes/routes.dart';
 import 'widgets/widgets.dart';
 
 class HomePage extends StatefulWidget {
@@ -74,77 +73,71 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: DSColors.neutral[100],
-      body: Stack(
-        children: [
-          Lottie.asset('assets/lottie/sky.json'),
-          SingleChildScrollView(
-            child: BlocBuilder(
-                bloc: cubit,
-                builder: (context, state) {
-                  if (state is HomeStates) {
-                    if (state.isLoading) {
-                      return Container(
-                        height: ScreenUtils(context).height,
-                        width: ScreenUtils(context).width,
-                        child: Center(
-                          child: Container(
-                            width: 56,
-                            height: 56,
-                            child: CircularProgressIndicator(),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Lottie.asset('assets/lottie/sky.json'),
+            SingleChildScrollView(
+              child: BlocBuilder(
+                  bloc: cubit,
+                  builder: (context, state) {
+                    if (state is HomeStates) {
+                      if (state.isLoading) {
+                        return Container(
+                          height: ScreenUtils(context).height,
+                          width: ScreenUtils(context).width,
+                          child: Center(
+                            child: Container(
+                              width: 56,
+                              height: 56,
+                              child: CircularProgressIndicator(),
+                            ),
                           ),
-                        ),
+                        );
+                      }
+        
+                      if (state.error != null) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: DSText.titleLargeBold.draw(
+                              state.error!,
+                              color: DSColors.error[100],
+                            ),
+                          ));
+                        });
+                      }
+        
+                      if (state.currentLocal == null) {
+                        return SafeArea(
+                          child: ChangeLocationWidget(
+                            currentLocal: state.currentLocal,
+                            onSubmit: (local) async {
+                              await cubit.setCurrentLocal(local);
+                              Modular.to.pop();
+                            },
+                            onRequestPermission: () async {
+                              await cubit.requestPermission();
+                              Modular.to.pop();
+                            },
+                          ),
+                        );
+                      }
+        
+                      return RealtimeContentWidget(
+                        state: state,
+                        onRefresh: () {
+                          cubit.init();
+                        },
                       );
                     }
-
-                    if (state.error != null) {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: DSText.titleLargeBold.draw(
-                            state.error!,
-                            color: DSColors.error[100],
-                          ),
-                        ));
-                      });
-                    }
-
-                    if (state.currentLocal == null) {
-                      return SafeArea(
-                        child: ChangeLocationWidget(
-                          currentLocal: state.currentLocal,
-                          onSubmit: (local) async {
-                            await cubit.setCurrentLocal(local);
-                            Modular.to.pop();
-                          },
-                          onRequestPermission: () async {
-                            await cubit.requestPermission();
-                            Modular.to.pop();
-                          },
-                        ),
-                      );
-                    }
-
-                    return RealtimeContentWidget(
-                      state: state,
-                      onRefresh: () {
-                        cubit.init();
-                      },
-                    );
-                  }
-
-                  return SizedBox.shrink();
-                }),
-          ),
-          Positioned(
-            top: 24,
-            right: 8,
-            child: DSButton.large.primary.iconFilled(
-              onPressed: () => Modular.to.pushNamed(Routes.settings),
-              icon: Icons.settings_outlined,
+        
+                    return SizedBox.shrink();
+                  }),
             ),
-          )
-        ],
+          ],
+        ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: BlocBuilder(
           bloc: cubit,
           builder: (context, state) {

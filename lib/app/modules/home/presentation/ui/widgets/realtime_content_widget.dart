@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../../design_system/design_system.dart';
+import '../../../../../routes/routes.dart';
 import '../../../../../shared/data/local/weather_types_mock.dart';
 import '../../../../../shared/domain/enums/weather_types_enum.dart';
 import '../../../../../shared/shared.dart';
@@ -24,6 +26,19 @@ class RealtimeContentWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DSButton.large.primary.iconFilled(
+                    onPressed: () => Modular.to.pushNamed(Routes.settings),
+                    icon: Icons.settings_outlined,
+                  ),
+                ),
+              ],
+            ),
             SizedBox(
               height: 32,
             ),
