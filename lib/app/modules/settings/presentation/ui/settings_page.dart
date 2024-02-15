@@ -110,7 +110,6 @@ class _SettingsPageState extends State<SettingsPage> {
                             ),
                             DSText.titleLargeBold
                                 .draw(SettingsStrings.darkMode.toUpperCase(), color: DSColors.neutral[0]),
-
                             Container(
                               padding: EdgeInsets.all(0),
                               margin: EdgeInsets.only(bottom: 16, top: 16),

@@ -1,5 +1,13 @@
 # @SuaMusica Challenge
 
+---------
+ 
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/yahAo6c4q5U/0.jpg)](https://www.youtube.com/watch?v=yahAo6c4q5U)
+
+---------
+
+
+
 #### A API ADOTADA PARA A SOLUÇÃO FOI A https://api.tomorrow.io EM TESTES DE INTEGRAÇÃO A API SUGERIDA SE MOSTROU MENOS EFICAS PARA O OBJETIVO DO CHALLENGE
 
 ---------
