@@ -89,7 +89,6 @@ class _ChangeLocationWidgetState extends State<ChangeLocationWidget> {
                       cursorColor: DSColors.primary[0],
                       autocorrect: true,
                       autofocus: false,
-                      textInputAction: TextInputAction.none,
                       controller: controller,
                       focusNode: focus,
                       textAlign: TextAlign.start,
