@@ -8,6 +8,7 @@ class HomeStates implements GlobalStates {
   final bool isLoading;
   final bool? noLocal;
   final String? error;
+  final bool? resetUI;
   final String? currentLocal;
 
   const HomeStates({
@@ -18,6 +19,7 @@ class HomeStates implements GlobalStates {
     this.error,
     this.currentLocal,
     this.noLocal,
+    this.resetUI,
   });
 
   HomeStates copyWith({
@@ -28,6 +30,7 @@ class HomeStates implements GlobalStates {
     bool? noLocal,
     String? error,
     String? currentLocal,
+    bool? resetUI,
   }) {
     return HomeStates(
       realtimeEntity: realtimeEntity ?? this.realtimeEntity,
@@ -37,6 +40,7 @@ class HomeStates implements GlobalStates {
       error: error ?? this.error,
       noLocal: noLocal ?? this.noLocal,
       currentLocal: currentLocal ?? this.currentLocal,
+      resetUI: resetUI ?? this.resetUI,
     );
   }
 
@@ -48,6 +52,7 @@ class HomeStates implements GlobalStates {
       isLoading: false,
       currentLocal: null,
       noLocal: null,
+        resetUI: null,
     );
   }
 
@@ -59,6 +64,7 @@ class HomeStates implements GlobalStates {
       isLoading: false,
       currentLocal: null,
       noLocal: true,
+      resetUI: null,
     );
   }
 
@@ -70,6 +76,7 @@ class HomeStates implements GlobalStates {
       isLoading: true,
       currentLocal: null,
       noLocal: null,
+      resetUI: null,
     );
   }
 }

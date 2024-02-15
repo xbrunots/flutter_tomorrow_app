@@ -57,7 +57,11 @@ class HomeCubit extends Cubit<HomeStates> {
         await placemarkFromCoordinates(position.latitude, position.longitude, localeIdentifier: 'pt_BR');
     if (place.first.subAdministrativeArea != null) {
       await setCurrentLocal(place.first.subAdministrativeArea!);
-      init();
+      currentLocal = place.first.subAdministrativeArea!;
+      await init();
+      emit(state.copyWith(
+        resetUI: true,
+      ));
     }
   }
 

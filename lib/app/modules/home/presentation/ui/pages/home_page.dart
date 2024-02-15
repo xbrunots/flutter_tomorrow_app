@@ -9,6 +9,7 @@ import 'package:suamusica_weather/app/modules/home/presentation/ui/pages/change_
 import 'package:suamusica_weather/app/shared/shared.dart';
 
 import '../../../../../design_system/design_system.dart';
+import '../../../../../design_system/widgets/utils/restart_widget.dart';
 import '../widgets/widgets.dart';
 
 class HomePage extends StatefulWidget {
@@ -50,6 +51,12 @@ class _HomePageState extends State<HomePage> {
                   bloc: cubit,
                   builder: (context, state) {
                     if (state is HomeStates) {
+                      if (state.resetUI == true) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          RestartWidget.restartApp(context);
+                        });
+                      }
+
                       if (state.isLoading) {
                         return Container(
                           height: ScreenUtils(context).height,

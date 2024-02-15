@@ -97,7 +97,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
+                    padding: EdgeInsets.symmetric(horizontal: 8),
                     child: SingleChildScrollView(
                       child: Container(
                         width: ScreenUtils(context).width,
@@ -128,7 +128,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                           borderRadius: BorderRadius.circular(10)),
                                       child: DSImageAsset(
                                         'assets/images/dark_theme.png',
-                                        width: (ScreenUtils(context).width * 0.50) - 60,
+                                        width: (ScreenUtils(context).width * 0.50) - 44,
                                         height: 128,
                                         fit: BoxFit.cover,
                                       ),
@@ -151,7 +151,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                           borderRadius: BorderRadius.circular(10)),
                                       child: DSImageAsset(
                                         'assets/images/light_theme.png',
-                                        width: (ScreenUtils(context).width * 0.50) - 60,
+                                        width: (ScreenUtils(context).width * 0.50) - 44,
                                         height: 128,
                                         fit: BoxFit.cover,
                                       ),
@@ -161,7 +161,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               ),
                             ),
                             Container(
-                              padding: EdgeInsets.all(24),
+                              padding: EdgeInsets.all(8),
                               margin: EdgeInsets.only(bottom: 16),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(16),
@@ -170,10 +170,13 @@ class _SettingsPageState extends State<SettingsPage> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  DSText.titleLargeBold.draw(
-                                    SettingsStrings.keyTitle,
-                                    color: DSColors.neutral[0],
-                                    textAlign: TextAlign.start,
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: DSText.titleLargeBold.draw(
+                                      SettingsStrings.keyTitle,
+                                      color: DSColors.neutral[0],
+                                      textAlign: TextAlign.start,
+                                    ),
                                   ),
                                   SizedBox(
                                     height: 16,
