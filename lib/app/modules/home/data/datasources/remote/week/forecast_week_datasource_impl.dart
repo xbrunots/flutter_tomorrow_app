@@ -1,5 +1,8 @@
+import '../../../../../../shared/domain/errors/errors.dart';
+import '../../../../../../shared/env/env.dart';
 import '../../../../../../shared/http_client/http_client.dart';
 import '../../../../domain/entities/entities.dart';
+import '../../../dtos/dtos.dart';
 import '../../datasources.dart';
 
 class ForecastWeekDatasourceImpl implements ForecastWeekDatasource {
@@ -12,31 +15,19 @@ class ForecastWeekDatasourceImpl implements ForecastWeekDatasource {
   Future<List<WeatherWeekEntity>> call({
     required String location,
   }) async {
-    return [
-      WeatherWeekEntity(time: "2024-02-14T15:53:00Z", forecast: WeekEntity()),
-      WeatherWeekEntity(time: "2024-02-14T15:53:00Z", forecast: WeekEntity()),
-      WeatherWeekEntity(time: "2024-02-14T15:53:00Z", forecast: WeekEntity()),
-      WeatherWeekEntity(time: "2024-02-14T15:53:00Z", forecast: WeekEntity()),
-      WeatherWeekEntity(time: "2024-02-14T15:53:00Z", forecast: WeekEntity()),
-      WeatherWeekEntity(time: "2024-02-14T15:53:00Z", forecast: WeekEntity()),
-      WeatherWeekEntity(time: "2024-02-14T15:53:00Z", forecast: WeekEntity()),
-      WeatherWeekEntity(time: "2024-02-14T15:53:00Z", forecast: WeekEntity()),
-    ];
+    final response = await httpClient.get(
+      path: 'forecast?location=$location&timesteps=1d&apikey=${Env.tomorrowToken}',
+    );
 
-    //
-    // final response = await httpClient.get(
-    //   path: 'forecast?location=$location&timesteps=1d&apikey=${Env.tomorrowToken}',
-    // );
-    //
-    // if (response.data['code'] != null) {
-    //   throw AppError(errorMessage: response.data['message']);
-    // }
-    //
-    // await setWeekLocal(data: response.data, location: location);
-    //
-    // List<WeatherWeekEntity> list =
-    //     (response.data['timelines']['daily'] as List).map((item) => WeatherForecastWeekDto.fromMap(item)).toList();
-    //
-    // return list ?? [];
+    if (response.data['code'] != null) {
+      throw AppError(errorMessage: response.data['message']);
+    }
+
+    await setWeekLocal(data: response.data, location: location);
+
+    List<WeatherWeekEntity> list =
+        (response.data['timelines']['daily'] as List).map((item) => WeatherForecastWeekDto.fromMap(item)).toList();
+
+    return list ?? [];
   }
 }

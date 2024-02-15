@@ -57,7 +57,7 @@ class _SplashPageState extends State<SplashPage> {
 
               if (state is NavigateHomeState) {
                 SchedulerBinding.instance.addPostFrameCallback((_) {
-                  Modular.to.pushNamed(Routes.home);
+                  Modular.to.pushReplacementNamed(Routes.home);
                 });
               }
 

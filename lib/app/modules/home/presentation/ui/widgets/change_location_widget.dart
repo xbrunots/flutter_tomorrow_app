@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:lottie/lottie.dart';
 import 'package:suamusica_weather/app/modules/home/presentation/ui/utils/home_strings.dart';
@@ -17,7 +16,8 @@ class ChangeLocationWidget extends StatefulWidget {
     super.key,
     this.onSubmit,
     this.currentLocal,
-    this.onRequestPermission, this.showClose,
+    this.onRequestPermission,
+    this.showClose,
   });
 
   @override
@@ -27,22 +27,6 @@ class ChangeLocationWidget extends StatefulWidget {
 class _ChangeLocationWidgetState extends State<ChangeLocationWidget> {
   String local = '';
   bool loading = false;
-  late TextEditingController controller;
-  late FocusNode focus;
-
-  @override
-  void initState() {
-    controller = TextEditingController();
-    focus = FocusNode();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    focus.dispose();
-    controller.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +42,7 @@ class _ChangeLocationWidgetState extends State<ChangeLocationWidget> {
         child: Stack(
           children: [
             SingleChildScrollView(
+              reverse: true,
               child: Column(
                 children: [
                   Row(
@@ -81,72 +66,38 @@ class _ChangeLocationWidgetState extends State<ChangeLocationWidget> {
                     HomeStrings.changeLocationDetails,
                     color: DSColors.primary[0],
                   ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  GestureDetector(
-                    child: TextFormField(
-                      cursorColor: DSColors.primary[0],
-                      autocorrect: true,
-                      autofocus: false,
-                      controller: controller,
-                      focusNode: focus,
-                      textAlign: TextAlign.start,
-                      style: DSText.headlineMedium.copyWith(color: DSColors.neutral[0]),
-                      onChanged: (value) {
-                        local = value;
-                        setState(() {});
-                      },
-                      decoration: InputDecoration(
-                        counterText: HomeStrings.changeLocationCounterText,
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: DSColors.wizard[50]!, width: 2),
-                        ),
-                        labelText: widget.currentLocal != null
-                            ? widget.currentLocal!.toUpperCase()
-                            : HomeStrings.myLocal.toUpperCase(),
-                        labelStyle: DSText.labelMediumBold.copyWith(color: DSColors.wizard[50]),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: DSColors.wizard[50]!, width: 2),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: DSColors.wizard[50]!, width: 2),
-                        ),
-                      ),
+                  Visibility(
+                      visible: widget.onSubmit != null,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: DSTextField(),
+                      )),
+                  Visibility(
+                    visible: widget.onSubmit != null,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: DSButton.large.wizard.filled(HomeStrings.searchLocal,
+                          expanded: true,
+                          prefixIcon: Icons.search,
+                          onPressed: local.isNotEmpty
+                              ? () {
+                                  setState(() {
+                                    loading = true;
+                                  });
+
+                                  widget.onSubmit?.call(local);
+                                }
+                              : null),
                     ),
                   ),
                   SizedBox(
-                    height: 16,
-                  ),
-                  DSButton.large.wizard.filled(HomeStrings.searchLocal,
-                      expanded: true,
-                      prefixIcon: Icons.search,
-                      onPressed: local.isNotEmpty
-                          ? () {
-                              setState(() {
-                                loading = true;
-                              });
-                              SystemChannels.textInput.invokeMethod('TextInput.hide');
-
-                              widget.onSubmit?.call(local);
-                            }
-                          : null),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  DSText.bodyLargeBold.draw(
-                    HomeStrings.or,
-                    color: DSColors.primary[0],
-                  ),
-                  SizedBox(
-                    height: 16,
+                    height: 32,
                   ),
                   DSButton.large.wizard.tonal(HomeStrings.getLocal.toUpperCase(),
                       expanded: true, prefixIcon: Icons.gps_fixed_outlined, onPressed: () {
                     setState(() {
                       loading = true;
                     });
-                    SystemChannels.textInput.invokeMethod('TextInput.hide');
 
                     widget.onRequestPermission?.call();
                   }),

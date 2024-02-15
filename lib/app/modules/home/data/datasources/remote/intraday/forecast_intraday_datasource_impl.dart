@@ -14,42 +14,19 @@ class ForecastIntraDayDatasourceImpl implements ForecastIntraDayDatasource {
 
   @override
   Future<List<WeatherIntraDayEntity>> call({required String location}) async {
-    return   [
-      WeatherIntraDayEntity(
-          time: "2024-02-14T15:53:00Z", forecast: IntraDayEntity()),
-      WeatherIntraDayEntity(
-          time: "2024-02-14T15:53:00Z", forecast: IntraDayEntity()),
-      WeatherIntraDayEntity(
-          time: "2024-02-14T15:53:00Z", forecast: IntraDayEntity()),
-      WeatherIntraDayEntity(
-          time: "2024-02-14T15:53:00Z", forecast: IntraDayEntity()),
-      WeatherIntraDayEntity(
-          time: "2024-02-14T15:53:00Z", forecast: IntraDayEntity()),
-      WeatherIntraDayEntity(
-          time: "2024-02-14T15:53:00Z", forecast: IntraDayEntity()),
-      WeatherIntraDayEntity(
-          time: "2024-02-14T15:53:00Z", forecast: IntraDayEntity()),
-      WeatherIntraDayEntity(
-          time: "2024-02-14T15:53:00Z", forecast: IntraDayEntity()),
-      WeatherIntraDayEntity(
-          time: "2024-02-14T15:53:00Z", forecast: IntraDayEntity()),
-      WeatherIntraDayEntity(
-          time: "2024-02-14T15:53:00Z", forecast: IntraDayEntity()),
-    ];
-    //
-    // final response = await httpClient.get(
-    //   path: 'forecast?location=$location&timesteps=1h&apikey=${Env.tomorrowToken}',
-    // );
-    //
-    // if (response.data['code'] != null) {
-    //   throw AppError(errorMessage: response.data['message']);
-    // }
-    //
-    // await setForecastIntraDayLocal(data: response.data, location: location);
-    //
-    // List<WeatherIntraDayEntity> list =
-    //     (response.data['timelines']['hourly'] as List).map((item) => WeatherForecastIntradayDto.fromMap(item)).toList();
-    //
-    // return list ?? [];
+    final response = await httpClient.get(
+      path: 'forecast?location=$location&timesteps=1h&apikey=${Env.tomorrowToken}',
+    );
+
+    if (response.data['code'] != null) {
+      throw AppError(errorMessage: response.data['message']);
+    }
+
+    await setForecastIntraDayLocal(data: response.data, location: location);
+
+    List<WeatherIntraDayEntity> list =
+        (response.data['timelines']['hourly'] as List).map((item) => WeatherForecastIntradayDto.fromMap(item)).toList();
+
+    return list ?? [];
   }
 }

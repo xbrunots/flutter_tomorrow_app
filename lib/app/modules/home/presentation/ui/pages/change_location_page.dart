@@ -48,21 +48,20 @@ class ChangeLocationPage extends StatefulWidget {
 class _ChangeLocationPageState extends State<ChangeLocationPage> {
   @override
   Widget build(BuildContext context) {
-    return ChangeLocationWidget(
-      currentLocal: widget.currentLocal,
-      showClose: widget.showClose,
-      onSubmit: (local) async {
-        await widget.cubit.setCurrentLocal(local);
-        Modular.to.pushNamed(
-          Routes.home,
-        );
-      },
-      onRequestPermission: () async {
-        await widget.cubit.requestPermission();
-        Modular.to.pushNamed(
-          Routes.home,
-        );
-      },
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: SingleChildScrollView(
+        child: ChangeLocationWidget(
+          currentLocal: widget.currentLocal,
+          showClose: widget.showClose,
+          onRequestPermission: () async {
+            await widget.cubit.requestPermission();
+            Modular.to.pushNamed(
+              Routes.home,
+            );
+          },
+        ),
+      ),
     );
   }
 }

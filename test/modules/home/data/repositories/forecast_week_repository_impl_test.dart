@@ -35,16 +35,6 @@ void main() {
       expect(result.isFailure(), true);
     });
 
-    test('Should return an AppError', () async {
-      when(() => weekDataSource.call(location: locationMock)).thenThrow((_) async => AppError());
-
-      final result = await repository.call(location: locationMock);
-
-      expect(
-        result.get((error) => error, (success) => success),
-        isA<AppError>(),
-      );
-    });
 
     test('Should return an AppError when an error is thrown', () async {
       when(() => weekDataSource.call(location: locationMock)).thenThrow(Error());

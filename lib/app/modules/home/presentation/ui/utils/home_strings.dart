@@ -8,7 +8,7 @@ class HomeStrings{
   static const String weekTitle = 'Previsão do tempo para semana';
   static const String or = 'OU';
   static const String changeLocationTitle = 'Definir Meu Local';
-      static const String changeLocationDetails = 'Por aqui, você pode customizar sua localização, seja através da localização do seu dispositivo ou até mesmo buscando uma localização por uma palavra-chave.';
+      static const String changeLocationDetails = 'Por aqui você pode definir seu local utilizando a localização do seu dispositivo!';
   static String maxSubTitle(value) => 'Máx.: $value';
   static String minSubTitle(value) => 'Mín.: $value';
   static const String  changeLocationCounterText = 'Digite Cidade, Estado ou Rua';

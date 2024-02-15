@@ -23,8 +23,11 @@ class HomeCubit extends Cubit<HomeStates> {
     this.getLocationUseCase,
   ) : super(HomeStates.loading());
 
+  String currentLocal = '';
+
   Future<void> setCurrentLocal(String location) async {
     await setLocationUseCase.call(location: location);
+    currentLocal = location;
     await init();
   }
 
@@ -64,6 +67,7 @@ class HomeCubit extends Cubit<HomeStates> {
 
     if (result is Success) {
       location = result.toSuccess();
+      if (location != null) currentLocal = location;
     }
 
     await getRealtime(location: location);
@@ -95,10 +99,11 @@ class HomeCubit extends Cubit<HomeStates> {
         currentLocal: null,
       )),
       (success) {
+        currentLocal = success.toName();
         emit(state.copyWith(
           realtimeEntity: success,
           isLoading: false,
-          currentLocal: location,
+          currentLocal: success.toName(),
         ));
       },
     );

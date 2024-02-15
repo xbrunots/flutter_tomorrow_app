@@ -26,19 +26,6 @@ class RealtimeContentWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: DSButton.large.primary.iconFilled(
-                    onPressed: () => Modular.to.pushNamed(Routes.settings),
-                    icon: Icons.settings_outlined,
-                  ),
-                ),
-              ],
-            ),
             SizedBox(
               height: 32,
             ),
@@ -104,16 +91,35 @@ class RealtimeContentWidget extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 16,
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: DSText.labelMedium.draw(
+                      state.realtimeEntity.name,
+                      textAlign: TextAlign.center,
+                      color: DSColors.neutral[50],
+                    ),
                   ),
-                  DSButton.medium.primary.tonal(
-                    HomeStrings.update,
-                    prefixIcon: state.isLoading != true ? Icons.sync : null,
-                    isLoading: state.isLoading == true,
-                    onPressed: () {
-                      onRefresh?.call();
-                    },
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      DSButton.medium.primary.tonal(
+                        HomeStrings.update,
+                        prefixIcon: state.isLoading != true ? Icons.sync : null,
+                        isLoading: state.isLoading == true,
+                        onPressed: () {
+                          onRefresh?.call();
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DSButton.medium.primary.iconGhost(
+                          onPressed: () => Modular.to.pushNamed(Routes.settings),
+                          icon: Icons.settings_outlined,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -123,14 +129,6 @@ class RealtimeContentWidget extends StatelessWidget {
             ),
             AverageContentWidget(
               data: state.weekList,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 32, left: 24, right: 24),
-              child: DSText.labelMedium.draw(
-                state.realtimeEntity.name,
-                textAlign: TextAlign.center,
-                color: DSColors.neutral[50],
-              ),
             ),
             SizedBox(
               height: 40,
