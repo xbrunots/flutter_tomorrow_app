@@ -116,15 +116,22 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          DSButton.large.primary.filled(
-            cubit.currentLocal,
-            prefixIcon: showLocalSearch ? Icons.close : Icons.edit_outlined,
-            onPressed: () {
-              setState(() {
-                showLocalSearch = !showLocalSearch;
-              });
-            },
-          ),
+          BlocBuilder(
+              bloc: cubit,
+              builder: (context, state) {
+                if (state is HomeStates) {
+                  return DSButton.large.primary.filled(
+                    cubit.currentLocal,
+                    prefixIcon: showLocalSearch ? Icons.close : Icons.edit_outlined,
+                    onPressed: () {
+                      setState(() {
+                        showLocalSearch = !showLocalSearch;
+                      });
+                    },
+                  );
+                }
+                return SizedBox.shrink();
+              }),
           SizedBox(
             width: 8,
           ),

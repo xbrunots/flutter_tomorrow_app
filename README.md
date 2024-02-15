@@ -1,7 +1,8 @@
 # @SuaMusica Challenge
 
 #### A API ADOTADA PARA A SOLUÇÃO FOI A https://api.tomorrow.io EM TESTES DE INTEGRAÇÃO A API SUGERIDA SE MOSTROU MENOS EFICAS PARA O OBJETIVO DO CHALLENGE
-DENTRO DA VARIAVEL DE AMBIENTE VOCE ENCONTRA 2 KEYS DE API, CASO UMA EXPIRE UTILIZE A OUTRA (**tomorrow_token_backup**), REMOVENDO O SUFIXO **_backup**
+DENTRO DAS VARIAVEIS DE AMBIENTE VOCE ENCONTRA 3 KEYS DE API, CASO UMA EXPIRE UTILIZE A OUTRA.
+POR PADRÃO A KEY USADA É A **tomorrow_token**
 
 
 ## ATENÇÃO
@@ -57,6 +58,13 @@ mocktail
 flutter_test
 
 bloc_test
+
+----------------
+
+### Cache
+Todas as chamadas de API que trazem dados historicos onde não existe finalidade aparente de visualização em tempo real segue uma logica de cache dinamico
+
+
 
 ----------------
 

@@ -8,7 +8,7 @@ import 'package:suamusica_weather/app/modules/settings/presentation/ui/utils/set
 import 'package:suamusica_weather/app/shared/shared.dart';
 
 import '../../../../design_system/design_system.dart';
-import '../../../../routes/routes.dart';
+import '../../../../design_system/widgets/utils/restart_widget.dart';
 import '../cubit/states/states.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -36,9 +36,9 @@ class _SettingsPageState extends State<SettingsPage> {
         child: BlocBuilder(
             bloc: cubit,
             builder: (context, state) {
-              if (state is ResetUIState) {
+              if (state is ResetUIState || state is ClearCacheState) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
-                  Modular.to.pushNamed(Routes.splash);
+                  RestartWidget.restartApp(context);
                 });
               }
 
@@ -64,15 +64,6 @@ class _SettingsPageState extends State<SettingsPage> {
                       color: DSColors.error[100],
                     ),
                   ));
-                });
-              }
-
-              if (state is ClearCacheState) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  Modular.to.pushReplacementNamed(
-                    Routes.splash,
-                    forRoot: true,
-                  );
                 });
               }
 

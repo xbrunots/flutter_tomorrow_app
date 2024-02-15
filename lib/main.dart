@@ -12,9 +12,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Modular.setInitialRoute(Routes.splash);
   runApp(
-    RestartWidget(
-      child: AppWidget(),
-    ),
+    const AppWidget(),
   );
 }
 
@@ -25,14 +23,16 @@ class AppWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ModularApp(
       module: AppModule(),
-      child: MaterialApp.router(
-        title: AppStrings.appTitle,
-        debugShowCheckedModeBanner: false,
-        theme: appTheme,
-        routerDelegate: Modular.routerDelegate,
-        routeInformationParser: Modular.routeInformationParser,
-        localizationsDelegates: GlobalMaterialLocalizations.delegates,
-        supportedLocales: const [Locale('pt', 'BR')],
+      child: RestartWidget(
+        child: MaterialApp.router(
+          title: AppStrings.appTitle,
+          debugShowCheckedModeBanner: false,
+          theme: appTheme,
+          routerDelegate: Modular.routerDelegate,
+          routeInformationParser: Modular.routeInformationParser,
+          localizationsDelegates: GlobalMaterialLocalizations.delegates,
+          supportedLocales: const [Locale('pt', 'BR')],
+        ),
       ),
     );
   }
