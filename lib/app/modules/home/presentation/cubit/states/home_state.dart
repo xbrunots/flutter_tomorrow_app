@@ -6,6 +6,7 @@ class HomeStates implements GlobalStates {
   final List<WeatherIntraDayEntity> intraDayList;
   final RealtimeEntity realtimeEntity;
   final bool isLoading;
+  final bool? noLocal;
   final String? error;
   final String? currentLocal;
 
@@ -16,6 +17,7 @@ class HomeStates implements GlobalStates {
     required this.intraDayList,
     this.error,
     this.currentLocal,
+    this.noLocal,
   });
 
   HomeStates copyWith({
@@ -23,6 +25,7 @@ class HomeStates implements GlobalStates {
     List<WeatherIntraDayEntity>? intraDayList,
     RealtimeEntity? realtimeEntity,
     bool? isLoading,
+    bool? noLocal,
     String? error,
     String? currentLocal,
   }) {
@@ -32,6 +35,7 @@ class HomeStates implements GlobalStates {
       weekList: weekList ?? this.weekList,
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
+      noLocal: noLocal ?? this.noLocal,
       currentLocal: currentLocal ?? this.currentLocal,
     );
   }
@@ -43,6 +47,18 @@ class HomeStates implements GlobalStates {
       weekList: [],
       isLoading: false,
       currentLocal: null,
+      noLocal: null,
+    );
+  }
+
+  factory HomeStates.noLocal() {
+    return HomeStates(
+      realtimeEntity: RealtimeEntity(),
+      intraDayList: [],
+      weekList: [],
+      isLoading: false,
+      currentLocal: null,
+      noLocal: true,
     );
   }
 
@@ -53,6 +69,7 @@ class HomeStates implements GlobalStates {
       weekList: [],
       isLoading: true,
       currentLocal: null,
+      noLocal: null,
     );
   }
 }

@@ -1,8 +1,16 @@
 # @SuaMusica Challenge
 
 #### A API ADOTADA PARA A SOLUÇÃO FOI A https://api.tomorrow.io EM TESTES DE INTEGRAÇÃO A API SUGERIDA SE MOSTROU MENOS EFICAS PARA O OBJETIVO DO CHALLENGE
-DENTRO DAS VARIAVEIS DE AMBIENTE VOCE ENCONTRA 3 KEYS DE API, CASO UMA EXPIRE UTILIZE A OUTRA.
-POR PADRÃO A KEY USADA É A **tomorrow_token**
+
+---------
+
+Afim de melhorar a experiência de uso, adicionei uma lista de seleção para alterar o Token de API,
+Já que pode acontecer de acabar o limite de requisições, causando bloqueio de 1 hora.
+Dentro da listagem de tokens existem 3 opções com 100% dos seus limites.
+
+![img_10.png](img_10.png)
+
+---------
 
 
 ## ATENÇÃO

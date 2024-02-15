@@ -9,6 +9,7 @@ import 'package:suamusica_weather/app/shared/shared.dart';
 
 import '../../../../design_system/design_system.dart';
 import '../../../../design_system/widgets/utils/restart_widget.dart';
+import '../../../../shared/env/env.dart';
 import '../cubit/states/states.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -99,7 +100,6 @@ class _SettingsPageState extends State<SettingsPage> {
                     padding: EdgeInsets.symmetric(horizontal: 24),
                     child: SingleChildScrollView(
                       child: Container(
-                        height: ScreenUtils(context).height - 400,
                         width: ScreenUtils(context).width,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -108,6 +108,58 @@ class _SettingsPageState extends State<SettingsPage> {
                             SizedBox(
                               height: 24,
                             ),
+                            DSText.titleLargeBold
+                                .draw(SettingsStrings.darkMode.toUpperCase(), color: DSColors.neutral[0]),
+
+                            Container(
+                              padding: EdgeInsets.all(0),
+                              margin: EdgeInsets.only(bottom: 16, top: 16),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  GestureDetector(
+                                    child: Container(
+                                      padding: EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                          color: currentEnable ? DSColors.success[50] : DSColors.neutral[80],
+                                          borderRadius: BorderRadius.circular(10)),
+                                      child: DSImageAsset(
+                                        'assets/images/dark_theme.png',
+                                        width: (ScreenUtils(context).width * 0.50) - 60,
+                                        height: 128,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      cubit.set(true);
+                                    },
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      cubit.set(false);
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                          color: currentEnable ? DSColors.neutral[80] : DSColors.success[50],
+                                          borderRadius: BorderRadius.circular(10)),
+                                      child: DSImageAsset(
+                                        'assets/images/light_theme.png',
+                                        width: (ScreenUtils(context).width * 0.50) - 60,
+                                        height: 128,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                             Container(
                               padding: EdgeInsets.all(24),
                               margin: EdgeInsets.only(bottom: 16),
@@ -115,17 +167,61 @@ class _SettingsPageState extends State<SettingsPage> {
                                 borderRadius: BorderRadius.circular(16),
                                 color: DSColors.neutral[80],
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  DSText.titleLargeBold
-                                      .draw(SettingsStrings.darkMode.toUpperCase(), color: DSColors.neutral[30]),
+                                  DSText.titleLargeBold.draw(
+                                    SettingsStrings.keyTitle,
+                                    color: DSColors.neutral[0],
+                                    textAlign: TextAlign.start,
+                                  ),
+                                  SizedBox(
+                                    height: 16,
+                                  ),
                                   Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
+                                      DSText.labelMediumBold.draw(Env.tomorrowTokenKey1, color: DSColors.neutral[0]),
                                       CupertinoSwitch(
-                                        value: currentEnable,
+                                        value: Env.tomorrowTokenKey1 == Env.tomorrowToken,
                                         onChanged: (value) {
-                                          cubit.set(value);
+                                          if (value) {
+                                            cubit.changeToken(Env.tomorrowTokenKey1);
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 4,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      DSText.labelMediumBold.draw(Env.tomorrowTokenKey2, color: DSColors.neutral[0]),
+                                      CupertinoSwitch(
+                                        value: Env.tomorrowTokenKey2 == Env.tomorrowToken,
+                                        onChanged: (value) {
+                                          if (value) {
+                                            cubit.changeToken(Env.tomorrowTokenKey2);
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 4,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      DSText.labelMediumBold.draw(Env.tomorrowTokenKey3, color: DSColors.neutral[0]),
+                                      CupertinoSwitch(
+                                        value: Env.tomorrowTokenKey3 == Env.tomorrowToken,
+                                        onChanged: (value) {
+                                          if (value) {
+                                            cubit.changeToken(Env.tomorrowTokenKey3);
+                                          }
                                         },
                                       ),
                                     ],
@@ -140,14 +236,11 @@ class _SettingsPageState extends State<SettingsPage> {
                                 borderRadius: BorderRadius.circular(16),
                                 color: DSColors.neutral[80],
                               ),
-                              child: DSButton.large.primary.tonal(
+                              child: DSButton.large.error.tonal(
                                 SettingsStrings.clearCache.toUpperCase(),
                                 expanded: true,
                                 onPressed: () => cubit.clearCache(),
                               ),
-                            ),
-                            SizedBox(
-                              height: 24,
                             ),
                           ],
                         ),

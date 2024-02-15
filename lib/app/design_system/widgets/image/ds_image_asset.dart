@@ -7,12 +7,14 @@ class DSImageAsset extends StatelessWidget {
     this.width,
     this.height,
     this.assetNameForErrors,
+    this.fit,
   });
 
   final String assetName;
   final String? assetNameForErrors;
   final double? width;
   final double? height;
+  final BoxFit? fit;
 
   @override
   Widget build(BuildContext context) {
@@ -20,20 +22,20 @@ class DSImageAsset extends StatelessWidget {
       return Container(
         width: width ?? 100,
         height: height ?? 100,
-        child: Image.asset(assetName),
+        child: Image.asset(assetName, fit: fit),
       );
     } catch (e) {
       if (assetNameForErrors == null) {
         return Container(
           width: width ?? 100,
           height: height ?? 100,
-          child: Image.asset('assets/images/logo.png'),
+          child: Image.asset('assets/images/logo.png', fit: fit),
         );
       }
       return Container(
         width: width ?? 100,
         height: height ?? 100,
-        child: Image.asset(assetNameForErrors!),
+        child: Image.asset(assetNameForErrors!, fit: fit),
       );
     }
   }

@@ -67,6 +67,14 @@ class ButtonTint extends DSButton {
         heightButton: heightButton,
         buttonSize: buttonSize,
       );
+
+  DSButtonType get success => DSButtonTypeImpl._(
+        iconSize: iconSize,
+        contentStyle: contentStyle,
+        buttonColor: DSColors.success[40]!,
+        heightButton: heightButton,
+        buttonSize: buttonSize,
+      );
 }
 
 enum ButtonSizeEnum { large, medium, small }

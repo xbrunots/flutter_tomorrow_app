@@ -70,6 +70,11 @@ class HomeCubit extends Cubit<HomeStates> {
       if (location != null) currentLocal = location;
     }
 
+    if (location == null) {
+      emit(HomeStates.noLocal());
+      return;
+    }
+
     await getRealtime(location: location);
     await getForecastIntraDay(location: location);
     await getForecastWeek(location: location);
@@ -102,6 +107,7 @@ class HomeCubit extends Cubit<HomeStates> {
         currentLocal = success.toName();
         emit(state.copyWith(
           realtimeEntity: success,
+          noLocal: null,
           isLoading: false,
           currentLocal: success.toName(),
         ));
@@ -134,6 +140,7 @@ class HomeCubit extends Cubit<HomeStates> {
       (success) {
         emit(state.copyWith(
           weekList: success,
+          noLocal: null,
           isLoading: false,
           currentLocal: location,
         ));
@@ -166,6 +173,7 @@ class HomeCubit extends Cubit<HomeStates> {
       (success) {
         emit(state.copyWith(
           weekList: success,
+          noLocal: null,
           isLoading: false,
           currentLocal: location,
         ));
@@ -198,6 +206,7 @@ class HomeCubit extends Cubit<HomeStates> {
       (success) {
         emit(state.copyWith(
           intraDayList: success,
+          noLocal: null,
           isLoading: false,
           currentLocal: location,
         ));

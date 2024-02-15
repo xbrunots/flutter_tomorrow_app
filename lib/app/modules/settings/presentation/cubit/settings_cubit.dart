@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:suamusica_weather/app/modules/settings/presentation/cubit/states/clear_cache_state.dart';
 
 import '../../../../shared/dark_mode/domain/usecases/usecases.dart';
+import '../../../../shared/env/env.dart';
 import '../../domain/usecases/usecases.dart';
 import 'states/states.dart';
 
@@ -47,5 +48,11 @@ class SettingsCubit extends Cubit<SettingsState> {
         emit(ResetUIState());
       },
     );
+  }
+
+  Future<void> changeToken(String value) async {
+    emit(LoadingState());
+    Env.tomorrowToken = value;
+    emit(ResetUIState());
   }
 }

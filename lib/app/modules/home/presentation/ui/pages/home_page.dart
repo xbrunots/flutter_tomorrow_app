@@ -64,8 +64,18 @@ class _HomePageState extends State<HomePage> {
                         );
                       }
 
+                      if (state.noLocal == true) {
+                        SchedulerBinding.instance.addPostFrameCallback((_) {
+                          ChangeLocationPage.show(
+                            context,
+                            cubit,
+                            showClose: false,
+                          );
+                        });
+                      }
+
                       if (state.error != null) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                        SchedulerBinding.instance.addPostFrameCallback((_) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: DSText.titleLargeBold.draw(
                               state.error!,
