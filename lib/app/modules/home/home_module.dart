@@ -3,7 +3,7 @@ import 'package:suamusica_weather/app/modules/home/data/datasources/datasources.
 import 'package:suamusica_weather/app/modules/home/domain/repositories/repositories.dart';
 import 'package:suamusica_weather/app/modules/home/domain/usecases/usecases.dart';
 import 'package:suamusica_weather/app/modules/home/presentation/cubit/home_cubit.dart';
-import 'package:suamusica_weather/app/modules/home/presentation/ui/home_page.dart';
+import 'package:suamusica_weather/app/modules/home/presentation/ui/pages/home_page.dart';
 
 import '../../routes/routes.dart';
 import '../../shared/http_client/http_client.dart';
@@ -28,7 +28,8 @@ class HomeModule extends Module {
     Bind<SetWeekLocalDatasource>((i) => SetWeekLocalDatasourceImpl(i<LocalStorage>())),
     Bind<GetWeekLocalDatasource>((i) => GetWeekLocalDatasourceImpl(i<LocalStorage>())),
     // Repository
-    Bind<ForecastWeekRepository>((i) => ForecastWeekRepositoryImpl(i<ForecastWeekDatasource>(), i<GetWeekLocalDatasource>())),
+    Bind<ForecastWeekRepository>(
+        (i) => ForecastWeekRepositoryImpl(i<ForecastWeekDatasource>(), i<GetWeekLocalDatasource>())),
     Bind<ForecastIntraDayRepository>(
         (i) => ForecastIntraDayRepositoryImpl(i<ForecastIntraDayDatasource>(), i<GetIntraDayLocalDatasource>())),
     Bind<ForecastRealtimeRepository>((i) => ForecastRealtimeRepositoryImpl(i<ForecastRealtimeDatasource>())),

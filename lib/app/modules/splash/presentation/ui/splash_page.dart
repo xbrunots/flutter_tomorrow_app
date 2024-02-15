@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -18,7 +19,6 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   final cubit = Modular.get<SplashCubit>();
-  bool currentEnable = true;
 
   @override
   void initState() {
@@ -55,12 +55,10 @@ class _SplashPageState extends State<SplashPage> {
                 });
               }
 
-              if (state is DarkModeState) {
-                currentEnable = state.darkMode == true;
-              }
-
               if (state is NavigateHomeState) {
-                Modular.to.pushNamed(Routes.home);
+                SchedulerBinding.instance.addPostFrameCallback((_) {
+                  Modular.to.pushNamed(Routes.home);
+                });
               }
 
               return Column(

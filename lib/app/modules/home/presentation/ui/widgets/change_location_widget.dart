@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:lottie/lottie.dart';
 import 'package:suamusica_weather/app/modules/home/presentation/ui/utils/home_strings.dart';
@@ -10,39 +11,48 @@ class ChangeLocationWidget extends StatefulWidget {
   final Function(String)? onSubmit;
   final Function()? onRequestPermission;
   final String? currentLocal;
+  final bool? showClose;
 
-  const ChangeLocationWidget({super.key, this.onSubmit, this.currentLocal, this.onRequestPermission});
+  const ChangeLocationWidget({
+    super.key,
+    this.onSubmit,
+    this.currentLocal,
+    this.onRequestPermission, this.showClose,
+  });
 
   @override
   State<ChangeLocationWidget> createState() => _ChangeLocationWidgetState();
 }
 
 class _ChangeLocationWidgetState extends State<ChangeLocationWidget> {
-  final GlobalKey<TooltipState> tooltipKey = GlobalKey<TooltipState>();
-  late TextEditingController controller;
-  late FocusNode focus;
   String local = '';
   bool loading = false;
+  late TextEditingController controller;
+  late FocusNode focus;
 
   @override
   void initState() {
-    super.initState();
     controller = TextEditingController();
     focus = FocusNode();
-    tooltipKey.currentState?.ensureTooltipVisible();
+    super.initState();
   }
 
   @override
   void dispose() {
-    super.dispose();
-    controller.dispose();
     focus.dispose();
+    controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = ScreenUtils(context).width;
+    double screenHeight = ScreenUtils(context).height;
+
     return Container(
       color: DSColors.neutral[100],
+      width: screenWidth,
+      height: screenHeight,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Stack(
@@ -54,7 +64,9 @@ class _ChangeLocationWidgetState extends State<ChangeLocationWidget> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      IconButton.filledTonal(onPressed: () => Modular.to.pop(), icon: Icon(Icons.close)),
+                      Visibility(
+                          visible: widget.currentLocal != null || widget.showClose == true,
+                          child: IconButton.filledTonal(onPressed: () => Modular.to.pop(), icon: Icon(Icons.close))),
                       SizedBox(
                         width: 8,
                       ),
@@ -72,20 +84,21 @@ class _ChangeLocationWidgetState extends State<ChangeLocationWidget> {
                   SizedBox(
                     height: 16,
                   ),
-                  TextField(
-                    controller: controller,
-                    focusNode: focus,
-                    keyboardType: TextInputType.streetAddress,
-                    textAlign: TextAlign.start,
-                    style: DSText.headlineMedium,
-                    onTap: () {
-                      tooltipKey.currentState?.ensureTooltipVisible();
-                    },
-                    onChanged: (value) {
-                      local = value;
-                      setState(() {});
-                    },
-                    decoration: InputDecoration(
+                  GestureDetector(
+                    child: TextFormField(
+                      cursorColor: DSColors.primary[0],
+                      autocorrect: true,
+                      autofocus: false,
+                      textInputAction: TextInputAction.none,
+                      controller: controller,
+                      focusNode: focus,
+                      textAlign: TextAlign.start,
+                      style: DSText.headlineMedium.copyWith(color: DSColors.neutral[0]),
+                      onChanged: (value) {
+                        local = value;
+                        setState(() {});
+                      },
+                      decoration: InputDecoration(
                         counterText: HomeStrings.changeLocationCounterText,
                         border: OutlineInputBorder(
                           borderSide: BorderSide(color: DSColors.wizard[50]!, width: 2),
@@ -100,45 +113,44 @@ class _ChangeLocationWidgetState extends State<ChangeLocationWidget> {
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: DSColors.wizard[50]!, width: 2),
                         ),
-                        suffixIcon: Tooltip(
-                          message: HomeStrings.clickHereForUseULocation,
-                          verticalOffset: -66,
-                          key: tooltipKey,
-                          triggerMode: TooltipTriggerMode.manual,
-                          showDuration: const Duration(seconds: 1),
-                          child: Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Container(
-                              child: loading
-                                  ? CircularProgressIndicator()
-                                  : IconButton.filledTonal(
-                                      onPressed: () {
-                                        setState(() {
-                                          loading = true;
-                                        });
-                                        widget.onRequestPermission?.call();
-                                      },
-                                      focusColor: DSColors.wizard[100],
-                                      icon: Icon(
-                                        Icons.gps_fixed_outlined,
-                                      )),
-                            ),
-                          ),
-                        )),
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: 16,
                   ),
                   DSButton.large.wizard.filled(HomeStrings.searchLocal,
                       expanded: true,
+                      prefixIcon: Icons.search,
                       onPressed: local.isNotEmpty
                           ? () {
                               setState(() {
                                 loading = true;
                               });
-                              widget.onSubmit?.call(controller.text);
+                              SystemChannels.textInput.invokeMethod('TextInput.hide');
+
+                              widget.onSubmit?.call(local);
                             }
                           : null),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  DSText.bodyLargeBold.draw(
+                    HomeStrings.or,
+                    color: DSColors.primary[0],
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  DSButton.large.wizard.tonal(HomeStrings.getLocal.toUpperCase(),
+                      expanded: true, prefixIcon: Icons.gps_fixed_outlined, onPressed: () {
+                    setState(() {
+                      loading = true;
+                    });
+                    SystemChannels.textInput.invokeMethod('TextInput.hide');
+
+                    widget.onRequestPermission?.call();
+                  }),
                 ],
               ),
             ),
@@ -148,8 +160,8 @@ class _ChangeLocationWidgetState extends State<ChangeLocationWidget> {
                 child: Visibility(
                   visible: loading,
                   child: Container(
-                    width: ScreenUtils(context).width,
-                    height: ScreenUtils(context).height * 0.6,
+                    width: screenWidth,
+                    height: screenHeight,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -157,7 +169,7 @@ class _ChangeLocationWidgetState extends State<ChangeLocationWidget> {
                         Lottie.asset(
                           'assets/lottie/happy_map_loading.json',
                           repeat: true,
-                          width: ScreenUtils(context).width * 0.8,
+                          width: screenWidth * 0.8,
                         ),
                         DSText.bodyPlusLarge.draw(
                           HomeStrings.loadingText,

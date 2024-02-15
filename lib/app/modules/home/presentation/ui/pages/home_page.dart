@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:lottie/lottie.dart';
 import 'package:suamusica_weather/app/modules/home/presentation/cubit/home_cubit.dart';
 import 'package:suamusica_weather/app/modules/home/presentation/cubit/states/home_state.dart';
+import 'package:suamusica_weather/app/modules/home/presentation/ui/pages/change_location_page.dart';
 import 'package:suamusica_weather/app/shared/shared.dart';
 
-import '../../../../design_system/design_system.dart';
-import 'widgets/widgets.dart';
+import '../../../../../design_system/design_system.dart';
+import '../utils/home_strings.dart';
+import '../widgets/widgets.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,61 +21,30 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final cubit = Modular.get<HomeCubit>();
+  final args = Modular.args;
 
   @override
   void initState() {
     super.initState();
-    cubit.init();
+    verifyRoute();
   }
 
-  void createModalChangeLocation(HomeCubit cubit) {
-    showModalBottomSheet<void>(
-      isScrollControlled: true,
-      useRootNavigator: true,
-      isDismissible: false,
-      enableDrag: true,
-      useSafeArea: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
-      ),
-      constraints: BoxConstraints(
-        maxWidth: ScreenUtils(context).width,
-        maxHeight: ScreenUtils(context).height * 0.9,
-      ),
-      backgroundColor: Colors.transparent,
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      context: context,
-      builder: (BuildContext context) {
-        return Padding(
-          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: BlocBuilder(
-              bloc: cubit,
-              builder: (context, state) {
-                if (state is HomeStates) {
-                  return ChangeLocationWidget(
-                    currentLocal: state.currentLocal,
-                    onSubmit: (local) async {
-                      await cubit.setCurrentLocal(local);
-                      Modular.to.pop();
-                    },
-                    onRequestPermission: () async {
-                      await cubit.requestPermission();
-                      Modular.to.pop();
-                    },
-                  );
-                }
-
-                return SizedBox.shrink();
-              }),
-        );
-      },
-    );
+  verifyRoute() {
+    final showLocalDialog = (args.data != null && args.data[HomeStrings.keyUpdateLocal] == true);
+    if (showLocalDialog) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        ChangeLocationPage.show(context, cubit);
+      });
+    } else {
+      cubit.init();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: DSColors.neutral[100],
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Stack(
           children: [
@@ -95,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         );
                       }
-        
+
                       if (state.error != null) {
                         WidgetsBinding.instance.addPostFrameCallback((_) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -106,23 +78,19 @@ class _HomePageState extends State<HomePage> {
                           ));
                         });
                       }
-        
-                      if (state.currentLocal == null) {
-                        return SafeArea(
-                          child: ChangeLocationWidget(
-                            currentLocal: state.currentLocal,
-                            onSubmit: (local) async {
-                              await cubit.setCurrentLocal(local);
-                              Modular.to.pop();
-                            },
-                            onRequestPermission: () async {
-                              await cubit.requestPermission();
-                              Modular.to.pop();
-                            },
-                          ),
-                        );
-                      }
-        
+
+                      // if (state.currentLocal == null) {
+                      //   WidgetsBinding.instance.addPostFrameCallback((_) {
+                      //     Modular.to.popUntil((route) => route.isFirst);
+                      //     Modular.to.pushReplacementNamed(
+                      //       Routes.home,
+                      //       arguments: {
+                      //         HomeStrings.keyUpdateLocal: true,
+                      //       },
+                      //     );
+                      //   });
+                      // }
+
                       return RealtimeContentWidget(
                         state: state,
                         onRefresh: () {
@@ -130,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                         },
                       );
                     }
-        
+
                     return SizedBox.shrink();
                   }),
             ),
@@ -142,15 +110,20 @@ class _HomePageState extends State<HomePage> {
           bloc: cubit,
           builder: (context, state) {
             if (state is HomeStates) {
-              return state.currentLocal == null
-                  ? SizedBox.shrink()
-                  : DSButton.large.primary.filled(
-                      state.realtimeEntity.toName(),
-                      prefixIcon: Icons.gps_fixed,
-                      onPressed: () => createModalChangeLocation(cubit),
+              return DSButton.large.primary.filled(
+                state.realtimeEntity.toName(),
+                prefixIcon: Icons.gps_fixed,
+                onPressed: () {
+                  SchedulerBinding.instance.addPostFrameCallback((_) {
+                    ChangeLocationPage.show(
+                      context,
+                      cubit,
+                      showClose: true,
                     );
+                  });
+                },
+              );
             }
-
             return SizedBox.shrink();
           }),
     );

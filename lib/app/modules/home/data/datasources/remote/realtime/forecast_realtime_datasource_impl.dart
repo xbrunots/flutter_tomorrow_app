@@ -10,7 +10,9 @@ class ForecastRealtimeDatasourceImpl implements ForecastRealtimeDatasource {
   const ForecastRealtimeDatasourceImpl(this.httpClient);
 
   @override
-  Future<RealtimeEntity> call({required String location}) async {  RealtimeEntity resultEntity = RealtimeEntity(
+  Future<RealtimeEntity> call({required String location}) async {
+
+    RealtimeEntity resultEntity = RealtimeEntity(
     temperature: 60,
     lat: -23.50034523010254,
     lon: -47.45828628540039,

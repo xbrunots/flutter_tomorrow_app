@@ -32,7 +32,7 @@ class SplashCubit extends Cubit<SplashState> {
 
   Future<void> navigate() async {
     emit(LoadingState());
-    await Future.delayed(3000.ms);
+    await Future.delayed(2.sec);
     emit(NavigateHomeState());
   }
 

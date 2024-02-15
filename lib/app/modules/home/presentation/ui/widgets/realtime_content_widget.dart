@@ -72,8 +72,10 @@ class RealtimeContentWidget extends StatelessWidget {
                     ),
                     padding: EdgeInsets.only(right: 8, left: 8, top: 4, bottom: 4),
                   ),
-                  DSText.bodySuperExtraLargeBold.draw(state.realtimeEntity.temperature.toFriendlyTemperature,
-                    color: DSColors.neutral[0],),
+                  DSText.bodySuperExtraLargeBold.draw(
+                    state.realtimeEntity.temperature.toFriendlyTemperature,
+                    color: DSColors.neutral[0],
+                  ),
                   SizedBox(
                     width: 8,
                   ),
@@ -84,15 +86,21 @@ class RealtimeContentWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        DSText.labelMediumBold.draw(HomeStrings.maxSubTitle(
-                            state.weekList.first.forecast?.temperatureMax.toFriendlyTemperature),
-                          color: DSColors.neutral[0],),
+                        DSText.labelMediumBold.draw(
+                          HomeStrings.maxSubTitle(state.weekList.isEmpty
+                              ? ''
+                              : state.weekList.first.forecast?.temperatureMax.toFriendlyTemperature),
+                          color: DSColors.neutral[0],
+                        ),
                         SizedBox(
                           width: 16,
                         ),
-                        DSText.labelMediumBold.draw(HomeStrings.minSubTitle(
-                            state.weekList.first.forecast?.temperatureMin.toFriendlyTemperature),
-                          color: DSColors.neutral[0],),
+                        DSText.labelMediumBold.draw(
+                          HomeStrings.minSubTitle(state.weekList.isEmpty
+                              ? ''
+                              : state.weekList.first.forecast?.temperatureMin.toFriendlyTemperature),
+                          color: DSColors.neutral[0],
+                        ),
                       ],
                     ),
                   ),
