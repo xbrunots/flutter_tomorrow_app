@@ -11,7 +11,7 @@ https://youtu.be/yahAo6c4q5U
 
 
 
-#### A API ADOTADA PARA A SOLUÇÃO FOI A https://api.tomorrow.io EM TESTES DE INTEGRAÇÃO A API SUGERIDA SE MOSTROU MENOS EFICAS PARA O OBJETIVO DO CHALLENGE
+#### A API ADOTADA PARA A SOLUÇÃO FOI A https://api.tomorrow.io
 
 ---------
 
@@ -55,7 +55,7 @@ SOLID
 Bloc/Cubit
 
 #### EXISTEM 2 ABORDAGENS DE FLUXO DE ESTADOS 
-- No Módulo **settings** voce encontra a mais convencional onde emitimos 1 State para cada ação.
+- No Módulo **settings** você encontra a mais convencional onde emitimos 1 State para cada ação.
 ![img_8.png](img_8.png)
 
 ----------------
@@ -120,5 +120,3 @@ Os componentes do Design System são reativos ao DarkMode, não necessitando de 
 
 ![img_4.png](img_4.png)
 ![img_6.png](img_6.png)
-
-### MUITO OBRIGADO
