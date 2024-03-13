@@ -1,5 +1,3 @@
-# @SuaMusica Challenge
-
 ---------
 
 https://youtu.be/yahAo6c4q5U
